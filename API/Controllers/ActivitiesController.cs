@@ -7,17 +7,18 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Application.Activities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-       
+   
     [HttpGet]
      public async Task<IActionResult> GetActivities() =>
         HandleResult(await Mediator.Send(new List.Query()));
-     
-    [HttpGet("{id}")]
+
+     [HttpGet("{id}")]
      public async Task<ActionResult> GetActivity(Guid id) =>
         HandleResult(await Mediator.Send(new Details.Query{Id = id}));
      
