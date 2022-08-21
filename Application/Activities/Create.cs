@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Activities
 {
@@ -29,15 +31,30 @@ namespace Application.Activities
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
+        private readonly IUserAccessor _userAccessor;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                _context.Activities.Add(request.Activity);
+
+            var user = await _context.Users.FirstOrDefaultAsync
+                (x => x.UserName == _userAccessor.GetUserName());
+
+              var attendee = new ActivityAttendee{
+                    AppUser = user,
+                    Activity = request.Activity,
+                    IsHost = true
+                };
+
+            request.Activity.Attendees.Add(attendee);
+            
+             _context.Activities.Add(request.Activity);
+            
                var result =  await _context.SaveChangesAsync() > 0;
                if(!result) return Result<Unit>.Failure("Failed to Create Activity");
                return Result<Unit>.Success(Unit.Value);               
