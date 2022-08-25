@@ -62,15 +62,15 @@ namespace API.Controllers
             ModelState.AddModelError("email", "Email taken");
                return ValidationProblem();
          }
-          if (await _userManager.Users.AnyAsync(x => x.UserName == registerDTO.Username)){
-            ModelState.AddModelError("username", "User name taken");
+          if (await _userManager.Users.AnyAsync(x => x.UserName == registerDTO.UserName)){
+            ModelState.AddModelError("userName", "User name taken");
             return ValidationProblem();
          }
 
          var user = new AppUser{
             DisplayName = registerDTO.DisplayName,
             Email = registerDTO.Email,
-            UserName = registerDTO.Username
+            UserName = registerDTO.UserName
 
          };
 

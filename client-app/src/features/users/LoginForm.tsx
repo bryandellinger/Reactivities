@@ -22,7 +22,7 @@ export default observer(function LoginForm() {
                    <Label style={{MarginBottom: 10}}
                      basic
                      color='red'
-                    content={errors.error} />}/>
+                    content={errors.error.toString()} />}/>
                 <Button loading={isSubmitting} positive content='Login' type='submit' fluid />
             </Form>  
          )}

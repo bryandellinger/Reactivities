@@ -19,7 +19,7 @@ namespace Application.Core
 
             CreateMap<Activity, ActivityDTO>()
             .ForMember(d => d
-            .HostUsername, o => o
+            .HostUserName, o => o
             .MapFrom(s => s
             .Attendees
             .FirstOrDefault(x => x
