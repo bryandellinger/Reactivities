@@ -58,4 +58,8 @@ register = async(creds: UserFormValues) =>{
   }
 }
 
+setImage = (image: string) => {
+  if (this.user) this.user.image = image;
+} 
+
 }

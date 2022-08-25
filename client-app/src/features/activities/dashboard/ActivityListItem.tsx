@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item,  ItemDescription,  Label,  Segment } from "semantic-ui-react";
@@ -22,28 +23,27 @@ export default observer(function ActivityListItem({activity} : Props){
             <Item.Group>
                 <Item>
                     <Item.Image style={{marginBottom: 3}}
-                    size='tiny' circular src='/assests/user.png' />
+                    size='tiny' circular src={activity.host?.image || '/assests/user.png'} />
                     <Item.Content>
-                        <Item.Header as = {Link} to = {`/activities/${activity.id}`}>
-                            {activity.title}
-                        </Item.Header>
-                        <Item.Description>
-                            Hosted by {activity.host?.displayName}
+                    <Item.Header as={Link} to={`/activities/${activity.id}`}>
+                                {activity.title}
+                            </Item.Header>
+                            <Item.Description>Hosted by <Link to={`/profiles/${activity.hostUsername}`}>{activity.host?.displayName}</Link>
+                            </Item.Description>
                             {activity.isHost && (
-                              <ItemDescription>
-                                <Label basic color='orange'>
-                                   You are hosting this activity
-                                </Label>
-                              </ItemDescription>
+                                <Item.Description>
+                                    <Label basic color='orange'>
+                                        You are hosting this activity
+                                    </Label>
+                                </Item.Description>
                             )}
-                                 {activity.isGoing && !activity.isHost && (
-                              <ItemDescription>
-                                <Label basic color='green'>
-                                   You are going to this activity
-                                </Label>
-                              </ItemDescription>
+                            {activity.isGoing && !activity.isHost && (
+                                <Item.Description>
+                                    <Label basic color='green'>
+                                        You are going to this activity
+                                    </Label>
+                                </Item.Description>
                             )}
-                        </Item.Description>
                     </Item.Content>
                 </Item>
             </Item.Group>
