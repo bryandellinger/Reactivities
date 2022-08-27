@@ -1,10 +1,14 @@
-using MediatR;
-using Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-
+using Persistence;
 namespace Application.Activities
 {
     public class List
@@ -14,14 +18,16 @@ namespace Application.Activities
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper){
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor){
+                _userAccessor = userAccessor;
                _context = context;
                _mapper = mapper;
             }
             public async Task<Result<List<ActivityDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities
-                  .ProjectTo<ActivityDTO>(_mapper.ConfigurationProvider)
+                  .ProjectTo<ActivityDTO>(_mapper.ConfigurationProvider, new {currentUserName = _userAccessor.GetUserName()})
                   .ToListAsync(cancellationToken);
 
 

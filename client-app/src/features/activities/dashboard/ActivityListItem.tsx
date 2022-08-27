@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
-import { Button, Icon, Item,  ItemDescription,  Label,  Segment } from "semantic-ui-react";
+import { Button, Icon, Item,    Label,  Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import ActivityListItemAttendee from "./ActivityListItemAttendee";
 
@@ -28,7 +27,7 @@ export default observer(function ActivityListItem({activity} : Props){
                     <Item.Header as={Link} to={`/activities/${activity.id}`}>
                                 {activity.title}
                             </Item.Header>
-                            <Item.Description>Hosted by <Link to={`/profiles/${activity.hostUsername}`}>{activity.host?.displayName}</Link>
+                            <Item.Description>Hosted by <Link to={`/profiles/${activity.hostUserName}`}>{activity.host?.displayName}</Link>
                             </Item.Description>
                             {activity.isHost && (
                                 <Item.Description>
